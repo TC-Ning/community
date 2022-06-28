@@ -1,6 +1,8 @@
 HELP.md
 mvnw.cmd
-target/
+target/**
+data/**
+JetBrainsworkspace/**
 .mvn/wrapper/
 !**/src/main/**
 !**/src/test/**
