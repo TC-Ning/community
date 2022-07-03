@@ -11,6 +11,7 @@ import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,9 @@ public class DiscussPostController implements CommunityConstant {
     @ResponseBody
     @LoginRequired
     public String addDiscussPost(String title, String content) {
+        if(StringUtils.isBlank(title)) {
+            return CommunityUtil.getJSONString(1, "标题不能为空！");
+        }
         User user = hostHolder.getUser();
         DiscussPost post = new DiscussPost();
         post.setUserId(user.getId());
@@ -81,7 +85,7 @@ public class DiscussPostController implements CommunityConstant {
             commentVoList.add(commentVo);
         }
         model.addAttribute("comments", commentVoList);
-        return "/site/discuss-detail";
+        return "site/discuss-detail";
     }
 
 

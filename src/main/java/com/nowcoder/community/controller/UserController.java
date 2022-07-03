@@ -58,13 +58,13 @@ public class UserController {
     public String uploadHeader(MultipartFile headerImage, Model model) {
         if(headerImage == null) {
             model.addAttribute("error", "您还没有选择图片！");
-            return "/site/setting";
+            return "site/setting";
         }
         String filename = headerImage.getOriginalFilename();
         String suffix = filename.substring(filename.lastIndexOf(".") + 1);
-        if(suffix.equals(filename)) {
+        if(suffix.equals(filename) || !suffix.equals("jpg") && !suffix.equals("jpeg") && !suffix.equals("png")) {
             model.addAttribute("error", "文件格式不正确！");
-            return "/site/setting";
+            return "site/setting";
         }
 
         //生成随机文件名
@@ -115,7 +115,7 @@ public class UserController {
         } else {
             model.addAttribute("oldPasswordMsg", map.get("oldPasswordMsg"));
             model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
-            return "/site/setting";
+            return "site/setting";
         }
     }
 

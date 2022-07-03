@@ -8,6 +8,7 @@ import com.nowcoder.community.service.MessageService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +55,7 @@ public class MessageController {
         model.addAttribute("conversations", conversationVoList);
         int unreadLetterCount = messageService.findUnreadMessageCount(user.getId(), null);
         model.addAttribute("letterUnreadCount", unreadLetterCount);
-        return "/site/letter";
+        return "site/letter";
     }
 
     @GetMapping("/letter/detail/{conversationId}")
@@ -92,7 +93,7 @@ public class MessageController {
                 messageService.readMessages(ids);
             }
         }
-        return "/site/letter-detail";
+        return "site/letter-detail";
     }
 
     @PostMapping("/letter/send")
@@ -101,6 +102,9 @@ public class MessageController {
         User target = userService.findUserByName(toName);
         if(target == null) {
             return CommunityUtil.getJSONString(1, "目标用户不存在！");
+        }
+        if(StringUtils.isBlank(content)) {
+            return CommunityUtil.getJSONString(1, "内容不能为空！");
         }
         Message message = new Message();
         message.setFromId(hostHolder.getUser().getId());

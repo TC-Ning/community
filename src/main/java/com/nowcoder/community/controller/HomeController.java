@@ -44,6 +44,6 @@ public class HomeController {
 
     @GetMapping("/error")
     public String getErrorPage() {
-        return "/error/500";
+        return "error/500";
     }
 }

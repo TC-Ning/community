@@ -71,6 +71,9 @@ public class UserService implements CommunityConstant {
             map.put("emailMsg", "邮箱不能为空！");
             return map;
         }
+        if(user.getUsername().length() > 50) {
+            map.put("usernameMsg", "用户名过长！");
+        }
         //验证账号
         User u = userMapper.selectByUsername(user.getUsername());
         if(u != null) {
@@ -98,7 +101,7 @@ public class UserService implements CommunityConstant {
         context.setVariable("email", user.getEmail());
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
         context.setVariable("url", url);
-        String content = templateEngine.process("/mail/activation", context);
+        String content = templateEngine.process("mail/activation", context);
         mailClient.sendMail(user.getEmail(), "激活账号", content);
 
         return map;
