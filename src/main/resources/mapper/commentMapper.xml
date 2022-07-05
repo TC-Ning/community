@@ -31,4 +31,19 @@
         values (#{userId}, #{entityType}, #{entityId}, #{targetId}, #{content}, #{status}, #{createTime});
     </insert>
 
+    <select id="selectCommentsByUser" resultType="Comment">
+        select <include refid="selectFields"></include>
+        from comment
+        where status != 1 and entity_type = 1 and user_id = #{userId}
+        and exists(select id from discuss_post where id = comment.entity_id and discuss_post.status != 2)
+        order by create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectCountByUser" resultType="int">
+        select count(id)
+        from community.comment
+        where status != 1 and user_id = #{userId} and entity_type = 1
+        and entity_id in (select id from community.discuss_post where id = comment.entity_id and discuss_post.status != 2)
+    </select>
 </mapper>
