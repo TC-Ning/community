@@ -19,4 +19,5 @@ public interface CommentMapper {
 
     int selectCountByUser(int userId);
 
+    Comment selectCommentById(int id);
 }

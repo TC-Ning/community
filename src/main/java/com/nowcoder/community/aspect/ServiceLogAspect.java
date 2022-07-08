@@ -28,10 +28,14 @@ public class ServiceLogAspect {
     public void before(JoinPoint joinPoint) {
         // 用户[1.2.3.4],在[xxx],访问了[com.nowcoder.community.service.xxx()].
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        String ip = request.getRemoteHost();
         String now = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(new Date());
         String target = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
+        if(attributes == null) {
+            logger.info(String.format("Kafka消费者在[%s],访问了[%s].", now, target));
+            return;
+        }
+        HttpServletRequest request = attributes.getRequest();
+        String ip = request.getRemoteHost();
         logger.info(String.format("用户[%s],在[%s],访问了[%s].", ip, now, target));
     }
 

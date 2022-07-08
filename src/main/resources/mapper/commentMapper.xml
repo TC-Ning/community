@@ -46,4 +46,10 @@
         where status != 1 and user_id = #{userId} and entity_type = 1
         and entity_id in (select id from community.discuss_post where id = comment.entity_id and discuss_post.status != 2)
     </select>
+
+    <select id="selectCommentById" resultType="Comment">
+        select <include refid="selectFields"></include>
+        from community.comment
+        where id = #{id};
+    </select>
 </mapper>
